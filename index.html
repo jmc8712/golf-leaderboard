@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Golf Pool Leaderboard</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+    }
+    table {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Golf Pool Leaderboard</h1>
+  <table id="leaderboard" class="display">
+    <thead>
+      <tr>
+        <th>Entry</th>
+        <th>Tier 1</th>
+        <th>Tier 2</th>
+        <th>Tier 3</th>
+        <th>Tier 4</th>
+        <th>Tier 5</th>
+        <th>Tier 6</th>
+        <th>Tier 7</th>
+        <th>Tier 8</th>
+        <th>Amateur</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <!-- jQuery & DataTables -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    const SHEET_URL = 'YOUR_WEB_APP_URL_HERE'; // ← Paste your Google Apps Script Web App URL
+
+    fetch(SHEET_URL)
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.querySelector('#leaderboard tbody');
+
+        data.forEach(entry => {
+          const row = <tr>
+            <td>${entry.Entry}</td>
+            <td>${entry['Tier 1']}</td>
+            <td>${entry['Tier 2']}</td>
+            <td>${entry['Tier 3']}</td>
+            <td>${entry['Tier 4']}</td>
+            <td>${entry['Tier 5']}</td>
+            <td>${entry['Tier 6']}</td>
+            <td>${entry['Tier 7']}</td>
+            <td>${entry['Tier 8']}</td>
+            <td>${entry['Amateur']}</td>
+            <td>${entry.Total}</td>
+          </tr>;
+          tbody.insertAdjacentHTML('beforeend', row);
+        });
+
+        $('#leaderboard').DataTable({
+          order: [[10, 'asc']] // Sort by Total score by default
+        });
+      })
+      .catch(err => {
+        console.error('Error loading leaderboard:', err);
+        alert('Could not load leaderboard data.');
+      });
+  </script>
+</body>
+</html>
